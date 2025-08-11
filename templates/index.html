@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Sign2Text - Sign Language to Text Translation</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+
+<style>
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    :root {
+        --primary-color: #6C63FF;
+        --secondary-color: #00D4FF;
+        --accent-color: #FFE66D;
+        --text-light: #FFFFFF;
+        --text-dark: #2C3E50;
+        --background-gradient: linear-gradient(135deg, #4834d4, #686de0, #30336b);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        background: var(--background-gradient);
+        color: var(--text-light);
+        overflow-x: hidden;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        width: 100vw;
+        height: 100px;
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navbar-brand {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar-brand h1 {
+        color: var(--text-light);
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .hero-header1 {
+        padding-top: 6rem;
+        padding-bottom: 3rem;
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+
+    .main-title {
+        color: var(--accent-color);
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        animation: slideInLeft 0.8s ease-out;
+        text-align: center;
+    }
+
+    .subtitle {
+        color: var(--text-light);
+        font-size: 38px;
+        font-weight: 500;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        animation: slideInLeft 0.8s ease-out 0.2s backwards;
+    }
+
+    .content-container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 2rem;
+        animation: slideInRight 0.8s ease-out 0.4s backwards;
+    }
+
+    .carousel-container img,
+    .video-feed {
+        max-height: 500px;
+        width: 100%;
+        object-fit: contain;
+        border-radius: 10px;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+    }
+
+
+    .controls {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .form-control {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: var(--text-light);
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: var(--primary-color);
+    }
+
+    .btn-danger {
+        background: var(--accent-color);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 991.5px) {
+        .navbar-brand h1 {
+            font-size: 1.8rem;
+        }
+
+        .hero-header1 {
+            padding-top: 5rem;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+        }
+
+        .content-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .controls {
+            flex-direction: column;
+        }
+
+        .form-control {
+            width: 100%;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<body>
+    <!-- Navbar start -->
+    <div class="container-fluid fixed-top p-0 m-0" style="left:0;right:0;width:100vw;">
+        <nav class="navbar justify-content-center p-0 m-0" style="width:100vw;">
+            <span class="navbar-brand m-0 p-0 w-100 text-center" style="padding-left:0;padding-right:0;">
+                <h1 class="w-100 m-0" style="display:inline-block;">Hand Gesture Recognition</h1>
+            </span>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <div class="container-fluid hero-header1">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <!-- Image Carousel Column -->
+                <h4 class="subtitle"><br/>Convert Sign language to Text Live</h4>
+                <div class="col-md-12 col-lg-6">
+                    
+                    <div class="main-content">
+                        
+                        <div class="content-container">
+                            <div id="carouselId" class="carousel slide" data-bs-interval="false">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="https://raw.githubusercontent.com/uzibytes/Sign2Text/master/hand-signs-of-the-ASL-Language.png"
+                                            class="img-fluid" alt="First slide" />
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="https://i.ibb.co/ZJ7858c/customsl.jpg"
+                                            class="img-fluid" alt="Second slide" />
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselId"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselId"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <h1 class="main-title">Sign --> Text</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Feed Column -->
+                <div class="col-md-12 col-lg-6">
+                    <div class="content-container">
+                        <img src="{{ url_for('video_feed') }}" class="video-feed" alt="Video Feed" />
+                        <div class="controls">
+                            <input type="text" id="translatedText" class="form-control"
+                                placeholder="Translated text will appear here" aria-label="Translated text">
+                            <button type="button" id="resetButton" class="btn btn-danger">Reset</button>
+                            <button type="button" id="speakButton" class="btn btn-primary">Speak</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Members Section -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4" style="color: var(--accent-color); font-weight: 700; letter-spacing: 1px;">Project Team</h2>
+        <div class="row justify-content-center g-4">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 shadow-lg border-0 text-center" style="background: rgba(255,255,255,0.08); color: var(--text-light);">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 600;">B PURUSHOTHAM</h5>
+                        <p class="card-text">21751A3311</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 shadow-lg border-0 text-center" style="background: rgba(255,255,255,0.08); color: var(--text-light);">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 600;">D SAI KIRAN</h5>
+                        <p class="card-text">21751A3321</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 shadow-lg border-0 text-center" style="background: rgba(255,255,255,0.08); color: var(--text-light);">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 600;">K THANVEER KHAN</h5>
+                        <p class="card-text">21751A3336</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 shadow-lg border-0 text-center" style="background: rgba(255,255,255,0.08); color: var(--text-light);">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: 600;">K MURALI</h5>
+                        <p class="card-text">21751A3348</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 col-md-8">
+                <div class="card shadow-lg border-0 text-center p-4" style="background: rgba(255,255,255,0.13); color: var(--text-light);">
+                    <div class="card-body">
+                        <h5 class="card-title mb-2" style="font-weight: 700; color: var(--secondary-color);">Guided by</h5>
+                        <p class="card-text mb-1" style="font-size: 1.2rem; font-weight: 600;">Mr. D. Gowtham, M.E</p>
+                        <p class="card-text mb-1">Assistant Professor</p>
+                        <p class="card-text">Department of CSE-AI&amp;ML</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Project Members Section -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="https://krishnaraj12.github.io/project/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="https://krishnaraj12.github.io/project/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="https://krishnaraj12.github.io/project/js/main.js"></script>
+    
+    <!-- Socket.io script -->
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        // Update the translatedText input with the prediction
+        socket.on('prediction', function (data) {
+            const translatedText = document.getElementById('translatedText');
+            translatedText.value = data.text;
+        });
+
+        // Reset button functionality
+        document.getElementById('resetButton').addEventListener('click', function () {
+            document.getElementById('translatedText').value = '';
+        });
+
+
+        document.getElementById('speakButton').addEventListener('click', function() {
+      const text = document.getElementById('translatedText').value;
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Set voice and speed
+      const voices = speechSynthesis.getVoices();
+      utterance.voice = voices.find(voice => voice.name === 'Google UK English Female') || voices[0]; // Choose a specific voice
+      utterance.rate = 1; // Speed (0.1 to 10)
+      
+      speechSynthesis.speak(utterance);
+    });
+
+        // Back to top button visibility
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 100) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for back to top
+        document.querySelector('.back-to-top').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
+</body>
+
+</html>
